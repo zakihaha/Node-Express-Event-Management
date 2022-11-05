@@ -13,20 +13,20 @@ POST http://localhost:9000/api/v1/cms/categories HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Adventure"
-}
-
-###
-
-# update categories
-PUT http://localhost:9000/api/v1/cms/categories/6362a49df15e9ccec5d8386e HTTP/1.1
-Content-Type: application/json
-
-{
     "name": "Funny"
 }
 
 ###
 
+# update categories
+PUT http://localhost:9000/api/v1/cms/categories/6362a5629e51f6b2333db067 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Adventure"
+}
+
+###
+
 # delete categories
-DELETE http://localhost:9000/api/v1/cms/categories/6362a49df15e9ccec5d8386e HTTP/1.1
+DELETE http://localhost:9000/api/v1/cms/categories/63669e49ea45cae229e5d9ff HTTP/1.1
