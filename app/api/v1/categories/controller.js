@@ -72,7 +72,7 @@ const destroy = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-
+        next(error)
     }
 }
 
