@@ -58,4 +58,12 @@ const deleteCategories = async (req) => {
     return result
 }
 
-module.exports = { getAllCategories, createCategories, getOneCategories, updateCategories, deleteCategories }
+const checkingCategories = async (id) => {
+    const result = await Categories.findOne({ _id: id })
+
+    if (!result) throw new NotFoundError('Category not found')
+
+    return result
+}
+
+module.exports = { getAllCategories, createCategories, getOneCategories, updateCategories, deleteCategories, checkingCategories }

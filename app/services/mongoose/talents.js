@@ -86,7 +86,7 @@ const deleteTalents = async (req) => {
     return result
 }
 
-const checkingTalents = async (req) => {
+const checkingTalents = async (id) => {
     const result = await Talents.findOne({ _id: id })
 
     if (!result) throw new NotFoundError('Talents not found')
