@@ -2,6 +2,11 @@ const User = require('../../api/v1/users/model')
 const Organizer = require('../../api/v1/organizers/model')
 const { BadRequestError } = require('../../errors')
 
+const getAllUsers = async (req) => {
+    const result = await User.find()
+    return result
+}
+
 const createOrganizer = async (req) => {
     const { organizer, name, email, password, passwordConfirmation, role } = req.body
 
@@ -38,4 +43,4 @@ const createUser = async (req) => {
     return result
 }
 
-module.exports = { createOrganizer, createUser }
+module.exports = { getAllUsers, createOrganizer, createUser }

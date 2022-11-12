@@ -7,7 +7,7 @@ const { checkingTalents } = require('./talents')
 const getAllEvents = async (req) => {
     const { keyword, category, talent, status } = req.query
 
-    let condition = {}
+    let condition = { organizer: req.user.organizer }
 
     if (keyword) {
         condition = { ...condition, title: { $regex: keyword, $options: 'i' } }
@@ -79,7 +79,8 @@ const createEvents = async (req) => {
         tickets,
         image,
         category,
-        talent
+        talent,
+        organizer: req.user.organizer
     })
 
     return result
@@ -88,7 +89,10 @@ const createEvents = async (req) => {
 const getOneEvents = async (req) => {
     const { id } = req.params
 
-    const result = await Events.findOne({ _id: id })
+    const result = await Events.findOne({ 
+        _id: id,
+        organizer: req.user.organizer
+    })
         .populate({
             path: 'category',
             select: '_id name'
@@ -132,7 +136,11 @@ const updateEvents = async (req) => {
 
     if (!checkEvent) throw new NotFoundError('Event not found')
 
-    const check = await Events.findOne({ title, _id: { $ne: id } })
+    const check = await Events.findOne({ 
+        title,
+        _id: { $ne: id },
+        organizer: req.user.organizer
+    })
     if (check) throw new BadRequestError('Title must be unique')
 
     const result = await Events.findOneAndUpdate(
@@ -148,7 +156,8 @@ const updateEvents = async (req) => {
             tickets,
             image,
             category,
-            talent
+            talent,
+            organizer: req.user.organizer
         },
         { new: true, runValidators: true }
     )
@@ -176,7 +185,10 @@ const changeStatusEvent = async (req) => {
 const deleteEvents = async (req) => {
     const { id } = req.params
 
-    const result = await Events.findOne({ _id: id })
+    const result = await Events.findOne({
+        _id: id,
+        organizer: req.user.organizer
+    })
 
     if (!result) throw new NotFoundError('Event not found')
 
