@@ -9,6 +9,11 @@ let categorySchema = new Schema(
             minlength: [3, 'Name must be at least 3 characters'],
             maxlength: [20, 'Name must be at most 20 characters'],
         },
+        organizer: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Organizer',
+            required: true
+        }
     },
     {
         timestamps: true
