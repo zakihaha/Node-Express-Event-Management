@@ -21,7 +21,7 @@ const getAllEvents = async (req) => {
         condition = { ...condition, talent }
     }
 
-    if (status) {
+    if (['Draft', 'Published'].includes(status)) {
         condition = { ...condition, statusEvent: status }
     }
 
@@ -89,7 +89,7 @@ const createEvents = async (req) => {
 const getOneEvents = async (req) => {
     const { id } = req.params
 
-    const result = await Events.findOne({ 
+    const result = await Events.findOne({
         _id: id,
         organizer: req.user.organizer
     })
@@ -136,7 +136,7 @@ const updateEvents = async (req) => {
 
     if (!checkEvent) throw new NotFoundError('Event not found')
 
-    const check = await Events.findOne({ 
+    const check = await Events.findOne({
         title,
         _id: { $ne: id },
         organizer: req.user.organizer
@@ -169,17 +169,22 @@ const changeStatusEvent = async (req) => {
     const { id } = req.params
     const { status } = req.body
 
-    const event = await Events.findOne({ _id: id })
+    if (!['Draft', 'Published'].includes(status)) {
+        throw new BadRequestError('Status must be Draft or Published')
+    }
+
+    const event = await Events.findOne({
+        _id: id,
+        organizer: req.user.organizer
+    })
 
     if (!event) throw new NotFoundError('Event not found')
 
-    const result = await Events.findOneAndUpdate(
-        { _id: id },
-        { statusEvent: status },
-        { new: true, runValidators: true }
-    )
+    event.statusEvent = status
 
-    return result
+    await event.save()
+
+    return event
 }
 
 const deleteEvents = async (req) => {
