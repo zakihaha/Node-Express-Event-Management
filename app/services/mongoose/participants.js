@@ -1,3 +1,4 @@
+const Event = require('../../api/v1/events/model')
 const Participant = require('../../api/v1/participants/model')
 const { NotFoundError, BadRequestError, UnauthorizedError } = require('../../errors')
 const { createJWT, createTokenParticipant } = require('../../utils')
@@ -79,4 +80,25 @@ const signinParticipant = async (req) => {
     return token
 }
 
-module.exports = { signupParticipant, activateParticipant, signinParticipant }
+const getAllEvents = async (req) => {
+    const result = await Event.find({ statusEvent: 'Published' })
+        .populate('category')
+        .populate('image')
+        .select('_id title date tickets venueName')
+
+    return result
+}
+
+const getOneEvent = async (req) => {
+    const result = await Event.findOne({ statusEvent: 'Published', _id: req.params.id })
+        .populate('category')
+        .populate('talent')
+        .populate('image')
+        .select('_id title date tickets venueName')
+
+    if (!result) throw new NotFoundError('Event not found')
+
+    return result
+}
+
+module.exports = { signupParticipant, activateParticipant, signinParticipant, getAllEvents, getOneEvent }
