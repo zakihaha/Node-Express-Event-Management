@@ -1,8 +1,9 @@
-const dotenv = require('dotenv')
-dotenv.config()
+require('dotenv').config()
 
 module.exports = {
     urlDb: process.env.URL_MONGODB_DEV,
-    jwtExpiration: "30d",
-    jwtSecret: "jwtsecret"
+    jwtExpiration: process.env.JWT_EXPIRATION,
+    jwtSecret: process.env.JWT_SECRET,
+    email: process.env.EMAIL,
+    password: process.env.PASSWORD,
 }
