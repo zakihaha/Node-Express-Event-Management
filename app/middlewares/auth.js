@@ -47,7 +47,7 @@ const authenticateParticipant = async (req, res, next) => {
 
         const payload = isTokenValid({ token })
 
-        req.user = {
+        req.participant = {
             id: payload.participantId,
             firstName: payload.firstName,
             lastame: payload.lastame,

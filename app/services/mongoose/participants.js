@@ -1,5 +1,6 @@
 const Event = require('../../api/v1/events/model')
 const Participant = require('../../api/v1/participants/model')
+const Orders = require('../../api/v1/orders/model')
 const { NotFoundError, BadRequestError, UnauthorizedError } = require('../../errors')
 const { createJWT, createTokenParticipant } = require('../../utils')
 const otpMail = require('../mail')
@@ -101,4 +102,9 @@ const getOneEvent = async (req) => {
     return result
 }
 
-module.exports = { signupParticipant, activateParticipant, signinParticipant, getAllEvents, getOneEvent }
+const getAllOrders = async (req) => {
+    const result = await Orders.find({ participant: req.participant.id })
+    return result
+}
+
+module.exports = { signupParticipant, activateParticipant, signinParticipant, getAllEvents, getOneEvent, getAllOrders }
