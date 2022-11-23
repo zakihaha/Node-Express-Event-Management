@@ -108,63 +108,63 @@ const getAllOrders = async (req) => {
     return result
 }
 
-// const checkoutOrder = async (req) => {
-//     const { event, personalDetail, payment, tickets } = req.body
+const checkoutOrder = async (req) => {
+    const { event, personalDetail, payment, tickets } = req.body
 
-//     const checkingEvent = await Event.findOne({ _id: event })
-//     if (!checkingEvent) throw new NotFoundError('Event not found')
+    const checkingEvent = await Event.findOne({ _id: event })
+    if (!checkingEvent) throw new NotFoundError('Event not found')
 
-//     const checkingPayment = await Payment.findOne({ _id: payment })
+    const checkingPayment = await Payment.findOne({ _id: payment })
 
-//     if (!checkingPayment) throw new NotFoundError('Payment method not found')
+    if (!checkingPayment) throw new NotFoundError('Payment method not found')
 
-//     let totalPay = 0, totalOrderTicket = 0
+    let totalPay = 0, totalOrderTicket = 0
 
-//     await tickets.forEach((tic) => {
-//         checkingEvent.tickets.forEach((ticket) => {
-//             if (tic.ticketCategories.type === ticket.type) {
-//                 if (tic.sumTicket > ticket.stock) {
-//                     throw new BadRequestError('Tickets out of stock')
-//                 } else {
-//                     ticket.stock -= tic.sumTicket
+    await tickets.forEach((tic) => {
+        checkingEvent.tickets.forEach((ticket) => {
+            if (tic.ticketCategories.type === ticket.type) {
+                if (tic.sumTicket > ticket.stock) {
+                    throw new BadRequestError('Tickets out of stock')
+                } else {
+                    ticket.stock -= tic.sumTicket
 
-//                     totalOrderTicket += tic.sumTicket
-//                     totalPay += tic.ticketCategories.price * tic.sumTicket
-//                 }
-//             }
-//         })
-//     })
+                    totalOrderTicket += tic.sumTicket
+                    totalPay += tic.ticketCategories.price * tic.sumTicket
+                }
+            }
+        })
+    })
 
-//     await checkingEvent.save()
+    await checkingEvent.save()
 
-//     const historyEvent = {
-//         title: checkingEvent.title,
-//         date: checkingEvent.date,
-//         about: checkingEvent.about,
-//         tagline: checkingEvent.tagline,
-//         keyPoint: checkingEvent.keyPoint,
-//         venueName: checkingEvent.venueName,
-//         tickets: tickets,
-//         image: checkingEvent.image,
-//         category: checkingEvent.category,
-//         talent: checkingEvent.talent,
-//         organizer: checkingEvent.organizer,
-//     }
+    const historyEvent = {
+        title: checkingEvent.title,
+        date: checkingEvent.date,
+        about: checkingEvent.about,
+        tagline: checkingEvent.tagline,
+        keyPoint: checkingEvent.keyPoint,
+        venueName: checkingEvent.venueName,
+        tickets: tickets,
+        image: checkingEvent.image,
+        category: checkingEvent.category,
+        talent: checkingEvent.talent,
+        organizer: checkingEvent.organizer,
+    }
 
-//     const result = new Orders({
-//         date: new Date(),
-//         personalDetail: personalDetail,
-//         totalPay,
-//         totalOrderTicket,
-//         orderItem: tickets,
-//         participant: req.participant.id,
-//         event,
-//         historyEvent,
-//         payment
-//     })
+    const result = new Orders({
+        date: new Date(),
+        personalDetail: personalDetail,
+        totalPay,
+        totalOrderTicket,
+        orderItem: tickets,
+        participant: req.participant.id,
+        event,
+        historyEvent,
+        payment
+    })
 
-//     await result.save()
-//     return result
-// }
+    await result.save()
+    return result
+}
 
-module.exports = { signupParticipant, activateParticipant, signinParticipant, getAllEvents, getOneEvent, getAllOrders }
+module.exports = { signupParticipant, activateParticipant, signinParticipant, getAllEvents, getOneEvent, getAllOrders, checkoutOrder }
