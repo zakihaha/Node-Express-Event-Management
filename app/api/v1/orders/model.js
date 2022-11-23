@@ -100,6 +100,15 @@ const orderSchema = new Schema(
                 type: String,
                 required: [true, 'Venue name is required'],
             },
+            // statusEvent: {
+            //     type: String,
+            //     enum: ['Draft', 'Published', 'Canceled'],
+            //     default: 'Draft'
+            // },
+            // tickets: {
+            //     type: [ticketCategoriesSchema],
+            //     required: true,
+            // },
             image: {
                 type: mongoose.Types.ObjectId,
                 ref: 'Image',
