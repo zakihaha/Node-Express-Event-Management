@@ -3,7 +3,13 @@ const { BadRequestError, NotFoundError } = require('../../errors')
 const { checkingImage } = require('./images')
 
 const getAllPayments = async (req) => {
+    const { keyword } = req.query
+    
     let condition = { organizer: req.user.organizer }
+
+    if (keyword) {
+        condition = { ...condition, type: { $regex: keyword, $options: 'i' } }
+    }
 
     const result = await Payment.find(condition)
         .populate({
